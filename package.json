@@ -1,0 +1,15 @@
+{
+  "name": "te-truena-compiler",
+  "version": "0.0.1",
+  "description": "Compiler for some language",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "keywords": [
+    "compiler",
+    "te-truena"
+  ],
+  "author": "Alan Munguia Cerda",
+  "license": "ISC"
+}
