@@ -4,12 +4,15 @@
   "description": "Compiler for some language",
   "main": "index.js",
   "scripts": {
-    "test": "node index.js"
+    "test": "node index.js test.txt"
   },
   "keywords": [
     "compiler",
     "te-truena"
   ],
   "author": "Alan Munguia Cerda",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "lex": "^1.7.9"
+  }
 }
