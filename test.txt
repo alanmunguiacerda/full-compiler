@@ -1,7 +1,7 @@
 constante decimal PI := 3.1415;
 constante entero MAX := 30;
 
-entero vector[MAX], matriz[MAX][MAX], i, n;
+entero vector[MAX], matriz[MAX][MAX], i, n, j;
 decimal r, s;
 alfabetico alfa, beta;
 logico bandera := falso;
@@ -39,7 +39,6 @@ inicio
          imprime("Dame un numero: ");
          lee( n );
       fin;
-/*
       haz opcion (opc)
       inicio
          caso 1: imprimenl("Factorial Recursivo de ", n, " es= ",
@@ -51,7 +50,6 @@ inicio
          caso 3: regresa d;
          otro caso: imprimenl("Opcion No valida");
        fin; //Opcion
-*/
       fin; // Mientras
    fin;
 
@@ -150,7 +148,7 @@ inicio
   sino
     Imprimenl("Falso");
   LeeVec( 5 );
-  OrdVec( 5 );
+  OrdBurbuja( 5 );
   Imprimenl();
   imprimenl("*** Arreglo Ordenado ***");
   ImpVec( 5 );

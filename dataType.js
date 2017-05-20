@@ -5,11 +5,12 @@ const types = {
     decimal: 'F',
     alfabetico: 'S',
     logico: 'B',
+    void: 'V',
 };
 
 class DataType extends TreeNode {
     getType() {
-        return types[this.symbol];
+        return types[this.symbol] || 'E';
     }
 }
 

@@ -1,8 +1,8 @@
 const TreeNode = require('./treeNode');
 
 class Float extends TreeNode {
-    constructor(symbol) {
-        super(symbol);
+    constructor(symbol, token) {
+        super(symbol, token);
 
         this.checkSemantic();
     }

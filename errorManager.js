@@ -1,5 +1,5 @@
 let errorCount = 0;
-const MAX_ERRORS = 10;
+const MAX_ERRORS = 1000;
 const ERROR_TYPES = {
     lex: 'LEX ERROR',
     syn: 'SYNT ERROR',

@@ -1,15 +1,19 @@
 const TreeNode = require('./treeNode');
+const ErrorManager = require('./errorManager');
 
 class Parameter extends TreeNode {
-    constructor(dataType, id) {
-        super('');
+    constructor(dataType, id, token) {
+        super(null, token);
         this.dataType = dataType;
         this.id = id;
     }
 
     checkSemantic() {
         const type = this.dataType.getType();
-        console.log('CHECKING PARAMETER');
+
+        if (type === 'E') {
+            ErrorManager.sem(this.row, this.col, `Invalid paramter type "${this.dataType.symbol}"`);
+        }
     }
 }
 
