@@ -14,5 +14,17 @@
   "license": "ISC",
   "dependencies": {
     "lex": "^1.7.9"
-  }
+  },
+  "directories": {
+    "doc": "docs"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@gitlab.com/alanmunguiacerda/te-truena-compiler.git"
+  },
+  "bugs": {
+    "url": "https://gitlab.com/alanmunguiacerda/te-truena-compiler/issues"
+  },
+  "homepage": "https://gitlab.com/alanmunguiacerda/te-truena-compiler#README"
 }
