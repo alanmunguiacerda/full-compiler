@@ -2,24 +2,23 @@ const TreeNode = require('./treeNode');
 const ErrorManager = require('./errorManager');
 
 class ForStatement extends TreeNode {
-    constructor(initializer, condition, step, statement) {
-        super('');
+    constructor(initializer, condition, step, stms, token) {
+        super(null, token);
         this.initializer = initializer;
         this.condition = condition;
         this.step = step;
-        this.statement = statement;
+        this.stms = stms;
     }
 
     checkSemantic() {
-        if (this.initializer) this.initializer.checkSemantic();
-        if (this.condition) this.condition.checkSemantic();
-        if (this.step) this.step.checkSemantic();
-
-        this.checkSemanticOnList(this.statement);
-
-        if (this.condition && this.condition.type !== 'B') {
-            ErrorManager.sem(0, 0, 'Condition must be of type "B"');
+        this.condition.checkSemantic();
+        const cond = this.condition;
+        if (cond && cond.type !== 'B') {
+            ErrorManager.sem(cond.row, cond.col, 'Condition must be of type B');
+            this.type = 'E';
         }
+
+        TreeNode.checkSemanticOnList(this.stms);
 
         this.type = 'V';
     }
