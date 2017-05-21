@@ -4,7 +4,7 @@ const ErrorManager = require('./errorManager');
 class IfStatement extends TreeNode {
     constructor(expr, stms, elseStms, token) {
         super(null, token);
-        this.expr = expr;
+        this.expr = expr || new TreeNode(null, token);
         this.stms = stms;
         this.elseStms = elseStms;
     }
@@ -13,7 +13,7 @@ class IfStatement extends TreeNode {
         this.expr.checkSemantic();
 
         if (this.expr.type !== 'B') {
-            ErrorManager.sem(this.expr.row, this.expr.col, 'Condition must be of type B');
+            ErrorManager.sem(this.expr.row, this.expr.col, 'Condition must be of type "B"');
         } else {
             this.type = 'V';
         }

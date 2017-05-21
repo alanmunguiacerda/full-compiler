@@ -31,6 +31,9 @@ const ContinueStatement = require('./continueStatement');
 const BreakStatement = require('./breakStatement');
 const SwitchStatement = require('./switchStatement');
 const CaseStatement = require('./caseStatement');
+const Print = require('./print');
+const Printnl = require('./printnl');
+const Read = require('./read');
 
 const DATA_TYPES_TOKENS = [
     FLOAT,
@@ -46,19 +49,15 @@ const RES_TYPES = [
     'alfabetico',
 ];
 
-const RES_FUNCS = [
-    'imprime',
-    'imprimenl',
-    'lee',
-];
+const RES_FUNCS = {
+    imprime: Print,
+    imprimenl: Printnl,
+    lee: Read,
+};
 
 class SyntAnalyzer {
     constructor(lexAnalyzer) {
         this.lexAnalyzer = lexAnalyzer;
-    }
-
-    getT() {
-        return this.lexAnalyzer.current();
     }
 
     analyze() {
@@ -75,16 +74,16 @@ class SyntAnalyzer {
 
         if (this.lookahead[1] === 'programa') {
             this.matchLexeme('programa');
-            type = new DataType('void', this.getT());
             node = this.compoundStatement({ isMain: true });
             return node;
         }
 
-        if (this.lookahead[1] === 'procedimiento') {
+        const token = this.lookahead;
+        if (token[1] === 'procedimiento') {
             this.matchToken(RES_WORD);
-            type = new DataType('void', this.getT());
+            type = new DataType('void', token);
             node = this.declaration(type, { isFunc: true });
-        } else if (this.lookahead[1] === 'constante') {
+        } else if (token[1] === 'constante') {
             this.matchToken(RES_WORD);
             type = this.typeEspecifier();
             node = this.constantDeclaration(type);
@@ -108,23 +107,26 @@ class SyntAnalyzer {
     constantDeclaration(type) {
         let declarator = null;
         let init = null;
-
-        const identifier = new Identifier(this.lookahead[1], this.getT());
+        const cond = { isConstant: true, dimensions: 0, dimensionsSizes: [] };
+        const dclrToken = this.lookahead;
+        const identifier = new Identifier(this.lookahead[1], dclrToken);
         this.matchToken(IDENTI);
+        const assignToken = this.lookahead;
         this.matchToken(ASSIGN);
         init = this.unaryExpression({ isConstant: true });
-        declarator = new VariableDeclarator(identifier, init, this.getT(), { isConstant: true });
+        declarator = new VariableDeclarator(identifier, init, assignToken, cond);
         this.matchLexeme(';');
 
-        return new Declaration(type, declarator, this.getT());
+        return new Declaration(type, declarator, dclrToken);
     }
 
     declaration(type, cond = {}) {
         if (!cond.isFunc) {
+            const funcToken = this.lookahead;
             const declarator = this.declaratorList();
             this.matchLexeme(';');
 
-            return new Declaration(type, declarator, this.getT());
+            return new Declaration(type, declarator, funcToken);
         }
 
         return this.functionDefinition(type);
@@ -142,7 +144,8 @@ class SyntAnalyzer {
     }
 
     declarator() {
-        const identifier = new Identifier(this.lookahead[1], this.getT());
+        const idToken = this.lookahead;
+        const identifier = new Identifier(idToken[1], idToken);
         this.matchToken(IDENTI);
 
         const arrayCond = this.arrayDefinition();
@@ -157,7 +160,7 @@ class SyntAnalyzer {
             init = this.logicalOrExpression();
         }
 
-        return new VariableDeclarator(identifier, init, this.getT(), arrayCond);
+        return new VariableDeclarator(identifier, init, idToken, arrayCond);
     }
 
     arrayDefinition() {
@@ -193,7 +196,8 @@ class SyntAnalyzer {
     }
 
     functionDefinition(type) {
-        const identifier = new Identifier(this.lookahead[1], this.getT());
+        const funcToken = this.lookahead;
+        const identifier = new Identifier(this.lookahead[1], funcToken);
         this.matchToken(IDENTI);
 
         this.matchLexeme('(');
@@ -221,7 +225,7 @@ class SyntAnalyzer {
                 aux.next = statement;
                 statement = variables;
             }
-            return new FunctionDefinition(type, identifier, param, statement, this.getT());
+            return new FunctionDefinition(type, identifier, param, statement, funcToken);
         }
 
         this.expected('<function|procedure> body');
@@ -229,7 +233,7 @@ class SyntAnalyzer {
     }
 
     typeEspecifier() {
-        const node = new DataType(this.lookahead[1], this.getT());
+        const node = new DataType(this.lookahead[1], this.lookahead);
         this.matchLexeme(RES_TYPES);
         return node;
     }
@@ -242,21 +246,23 @@ class SyntAnalyzer {
         let node = null;
         let aux = null;
 
+        let paramToken = this.lookahead;
         let type = this.typeEspecifier();
-        let id = new Identifier(this.lookahead[1], this.getT());
+        let id = new Identifier(this.lookahead[1], this.lookahead);
 
         this.matchToken(IDENTI);
 
-        node = new Parameter(type, id, this.getT());
+        node = new Parameter(type, id, paramToken);
         aux = node;
 
         while (this.lookahead[1] === ',') {
             this.matchLexeme(',');
+            paramToken = this.lookahead;
             type = this.typeEspecifier();
-            id = new Identifier(this.lookahead[1], this.getT());
+            id = new Identifier(this.lookahead[1], this.lookahead);
             this.matchToken(IDENTI);
 
-            aux.next = new Parameter(type, id, this.getT());
+            aux.next = new Parameter(type, id, paramToken);
             aux = aux.next;
         }
 
@@ -269,6 +275,7 @@ class SyntAnalyzer {
             let stm = null;
             let elseStm = null;
 
+            const ifToken = this.lookahead;
             this.matchLexeme('si');
             this.matchLexeme('(');
             expr = this.logicalOrExpression();
@@ -276,22 +283,23 @@ class SyntAnalyzer {
             stm = this.statement();
             elseStm = this.elseStatement();
 
-            return new IfStatement(expr, stm, elseStm, this.getT());
+            return new IfStatement(expr, stm, elseStm, ifToken);
         }
 
         if (this.lookahead[1] === 'haz') {
             let expr = null;
-
+            const switchToken = this.lookahead;
             this.matchLexeme('haz');
             this.matchLexeme('opcion');
             this.matchLexeme('(');
             expr = this.logicalOrExpression();
             this.matchLexeme(')');
             const stms = this.statement();
-            return new SwitchStatement(expr, stms, this.getT());
+            return new SwitchStatement(expr, stms, switchToken);
         }
 
         if (this.lookahead[1] === 'caso') {
+            const caseToken = this.lookahead;
             this.matchLexeme('caso');
             if (DATA_TYPES_TOKENS.indexOf(this.lookahead[0]) < 0) {
                 this.matchLexeme('[Constant value]');
@@ -299,18 +307,20 @@ class SyntAnalyzer {
             const expr = this.primaryExpression();
             this.matchLexeme(':');
             const stms = this.statement();
-            return new CaseStatement(expr, stms, this.getT());
+            return new CaseStatement(expr, stms, caseToken);
         }
 
         if (this.lookahead[1] === 'otro') {
+            const defaultToken = this.lookahead;
             this.matchLexeme('otro');
             this.matchLexeme('caso');
             this.matchLexeme(':');
             const stms = this.statement();
-            return new CaseStatement(null, stms, this.getT());
+            return new CaseStatement(null, stms, defaultToken);
         }
 
         if (this.lookahead[1] === 'iterar') {
+            const whileToken = this.lookahead;
             let expr = null;
             let stm = null;
 
@@ -321,7 +331,7 @@ class SyntAnalyzer {
             this.matchLexeme(')');
             stm = this.statement();
 
-            return new WhileStatement(expr, stm, this.getT());
+            return new WhileStatement(expr, stm, whileToken);
         }
 
         if (this.lookahead[1] === 'para') {
@@ -333,53 +343,61 @@ class SyntAnalyzer {
             let step = null;
             let stm = null;
 
+            const forToken = this.lookahead;
             this.matchLexeme('para');
-            id = new Identifier(this.lookahead[1], this.getT());
+            id = new Identifier(this.lookahead[1], this.lookahead);
             this.matchToken(IDENTI);
             this.matchLexeme('en');
             this.matchLexeme('rango');
             initialValue = this.logicalOrExpression();
-            initializer = new BinaryExpression(':=', id, initialValue, this.getT());
+            initializer = new BinaryExpression(':=', id, initialValue, this.lookahead);
             this.matchLexeme('a');
             stopCondition = this.logicalOrExpression();
-            condition = new BinaryExpression('=', id, stopCondition, this.getT());
+            condition = new BinaryExpression('=', id, stopCondition, this.lookahead);
             if (
                 this.lookahead[1] === 'incr'
                 || this.lookahead[1] === 'decr'
             ) {
-                // FIXME: assign sign :v
+                const tok = this.lookahead;
                 this.matchToken(RES_WORD);
-                step = this.logicalOrExpression();
+                step = tok[1] === 'decr'
+                    ? new UnaryExpression('-', this.logicalOrExpression(), tok)
+                    : this.logicalOrExpression();
             } else {
-                step = new Integer(1, this.getT());
+                step = new Integer(1, this.lookahead);
             }
             stm = this.statement();
 
-            return new ForStatement(initializer, condition, step, stm, this.getT());
+            return new ForStatement(initializer, condition, step, stm, forToken);
         }
 
         if (this.lookahead[1] === 'regresa') {
+            const returnToken = this.lookahead;
             let expr = null;
 
             this.matchLexeme('regresa');
-            expr = this.logicalOrExpression();
+            if (this.lookahead[1] !== ';') {
+                expr = this.logicalOrExpression();
+            }
             this.matchLexeme(';');
 
-            return new ReturnStatement(expr, this.getT());
+            return new ReturnStatement(expr, returnToken);
         }
 
         if (this.lookahead[1] === 'continua') {
+            const continueToken = this.lookahead;
             this.matchLexeme('continua');
             this.matchLexeme(';');
 
-            return new ContinueStatement(this.getT());
+            return new ContinueStatement(continueToken);
         }
 
         if (this.lookahead[1] === 'interrumpe') {
+            const breakToken = this.lookahead;
             this.matchLexeme('interrumpe');
             this.matchLexeme(';');
 
-            return new BreakStatement(this.getT());
+            return new BreakStatement(breakToken);
         }
 
         if (this.lookahead[1] === 'inicio') {
@@ -422,7 +440,7 @@ class SyntAnalyzer {
             || this.lookahead[1] === 'caso'
             || this.lookahead[1] === 'otro'
             || this.lookahead[0] === IDENTI
-            || RES_FUNCS.indexOf(this.lookahead[1]) > -1
+            || RES_FUNCS[this.lookahead[1]]
         ) {
             node = this.statement();
 
@@ -449,7 +467,7 @@ class SyntAnalyzer {
         let id = null;
         this.lexAnalyzer.back();
         if (this.lookahead[0] === IDENTI) {
-            id = new Identifier(this.lookahead[1], this.getT());
+            id = new Identifier(this.lookahead[1], this.lookahead);
         }
 
         if (nextTok[1] === '[') {
@@ -461,11 +479,11 @@ class SyntAnalyzer {
 
         if (this.lookahead[0] === ASSIGN) {
             let aux = null;
-            const symbol = this.lookahead[1];
+            const symbolToken = this.lookahead;
             this.matchToken(ASSIGN);
             aux = this.logicalOrExpression();
 
-            return new BinaryExpression(symbol, id, aux, this.getT());
+            return new BinaryExpression(symbolToken[1], id, aux, symbolToken);
         }
 
         return this.logicalOrExpression();
@@ -473,15 +491,20 @@ class SyntAnalyzer {
 
     logicalOrExpression() {
         let expr = null;
-        let symbol = null;
+        let symbolToken = null;
 
         expr = this.logicalAndExpression();
 
         while (this.lookahead[1] === 'o') {
-            symbol = this.lookahead[1];
+            symbolToken = this.lookahead;
             this.matchLexeme('o');
 
-            expr = new BinaryExpression(symbol, expr, this.logicalAndExpression(), this.getT());
+            expr = new BinaryExpression(
+                symbolToken[1],
+                expr,
+                this.logicalAndExpression(),
+                symbolToken
+            );
         }
 
         return expr;
@@ -489,15 +512,20 @@ class SyntAnalyzer {
 
     logicalAndExpression() {
         let expr = null;
-        let symbol = null;
+        let symbolToken = null;
 
         expr = this.equalityExpression();
 
         while (this.lookahead[1] === 'y') {
-            symbol = this.lookahead[1];
+            symbolToken = this.lookahead;
             this.matchLexeme('y');
 
-            expr = new BinaryExpression(symbol, expr, this.equalityExpression(), this.getT());
+            expr = new BinaryExpression(
+                symbolToken[1],
+                expr,
+                this.equalityExpression(),
+                symbolToken
+            );
         }
 
         return expr;
@@ -505,15 +533,20 @@ class SyntAnalyzer {
 
     equalityExpression() {
         let expr = null;
-        let symbol = null;
+        let symbolToken = null;
 
         expr = this.relationalExpression();
 
         while (this.lookahead[1] === '=') {
-            symbol = this.lookahead[1];
+            symbolToken = this.lookahead;
             this.matchLexeme('=');
 
-            expr = new BinaryExpression(symbol, expr, this.relationalExpression(), this.getT());
+            expr = new BinaryExpression(
+                symbolToken[1],
+                expr,
+                this.relationalExpression(),
+                symbolToken
+            );
         }
 
         return expr;
@@ -521,15 +554,20 @@ class SyntAnalyzer {
 
     relationalExpression() {
         let expr = null;
-        let symbol = null;
+        let symbolToken = null;
 
         expr = this.additiveExpression();
 
         while (this.lookahead[0] === OP_REL) {
-            symbol = this.lookahead[1];
+            symbolToken = this.lookahead;
             this.matchToken(OP_REL);
 
-            expr = new BinaryExpression(symbol, expr, this.additiveExpression(), this.getT());
+            expr = new BinaryExpression(
+                symbolToken[1],
+                expr,
+                this.additiveExpression(),
+                symbolToken
+            );
         }
 
         return expr;
@@ -537,7 +575,7 @@ class SyntAnalyzer {
 
     additiveExpression() {
         let expr = null;
-        let symbol = null;
+        let symbolToken = null;
 
         expr = this.multiplicativeExpression();
 
@@ -545,10 +583,15 @@ class SyntAnalyzer {
             this.lookahead[1] === '+'
             || this.lookahead[1] === '-'
         ) {
-            symbol = this.lookahead[1];
-            this.matchLexeme(this.lookahead[1]);
+            symbolToken = this.lookahead;
+            this.matchLexeme(symbolToken[1]);
 
-            expr = new BinaryExpression(symbol, expr, this.multiplicativeExpression(), this.getT());
+            expr = new BinaryExpression(
+                symbolToken[1],
+                expr,
+                this.multiplicativeExpression(),
+                symbolToken
+            );
         }
 
         return expr;
@@ -556,18 +599,24 @@ class SyntAnalyzer {
 
     multiplicativeExpression() {
         let expr = null;
-        let symbol = null;
+        let symbolToken = null;
 
         expr = this.powExpression();
 
         while (
             this.lookahead[1] === '*'
             || this.lookahead[1] === '/'
+            || this.lookahead[1] === '%'
         ) {
-            symbol = this.lookahead[1];
-            this.matchLexeme(this.lookahead[1]);
+            symbolToken = this.lookahead;
+            this.matchLexeme(symbolToken[1]);
 
-            expr = new BinaryExpression(symbol, expr, this.powExpression(), this.getT());
+            expr = new BinaryExpression(
+                symbolToken[1],
+                expr,
+                this.powExpression(),
+                symbolToken
+            );
         }
 
         return expr;
@@ -575,15 +624,20 @@ class SyntAnalyzer {
 
     powExpression() {
         let expr = null;
-        let symbol = null;
+        let symbolToken = null;
 
         expr = this.unaryExpression();
 
         while (this.lookahead[1] === '^') {
-            symbol = this.lookahead[1];
-            this.matchLexeme(this.lookahead[1]);
+            symbolToken = this.lookahead;
+            this.matchLexeme(symbolToken[1]);
 
-            expr = new BinaryExpression(symbol, expr, this.unaryExpression(), this.getT());
+            expr = new BinaryExpression(
+                symbolToken[1],
+                expr,
+                this.unaryExpression(),
+                symbolToken
+            );
         }
 
         return expr;
@@ -594,10 +648,14 @@ class SyntAnalyzer {
             this.lookahead[1] === '+'
             || this.lookahead[1] === '-'
         ) {
-            const symbol = this.lookahead[1];
-            this.matchLexeme(symbol);
+            const symbolToken = this.lookahead;
+            this.matchLexeme(symbolToken[1]);
 
-            return new UnaryExpression(symbol, this.unaryExpression(cond), this.getT());
+            return new UnaryExpression(
+                symbolToken[1],
+                this.unaryExpression(cond),
+                symbolToken
+            );
         }
 
         return this.primaryExpression(cond);
@@ -607,28 +665,25 @@ class SyntAnalyzer {
         let expr = null;
 
         if (this.lookahead[0] === IDENTI && !cond.isConstant) {
-            const id = new Identifier(this.lookahead[1], this.getT());
+            const id = new Identifier(this.lookahead[1], this.lookahead);
             this.matchToken(IDENTI);
             return this.functionCall(id);
         } else if (
-            RES_FUNCS.indexOf(this.lookahead[1]) > -1
+            RES_FUNCS[this.lookahead[1]]
             && !cond.isConstant
         ) {
-            // FIXME: call the actual function or some shit
-            const id = new Identifier(this.lookahead[1], this.getT());
-            this.matchToken(RES_WORD);
-            return this.functionCall(id);
+            return this.reservedFunctionCall();
         } else if (this.lookahead[0] === INT) {
-            expr = new Integer(this.lookahead[1], this.getT());
+            expr = new Integer(this.lookahead[1], this.lookahead);
             this.matchToken(INT);
         } else if (this.lookahead[0] === FLOAT) {
-            expr = new Float(this.lookahead[1], this.getT());
+            expr = new Float(this.lookahead[1], this.lookahead);
             this.matchToken(FLOAT);
         } else if (this.lookahead[0] === CT_ALF) {
-            expr = new TString(this.lookahead[1], this.getT());
+            expr = new TString(this.lookahead[1], this.lookahead);
             this.matchToken(CT_ALF);
         } else if (this.lookahead[0] === CT_LOG) {
-            expr = new Bool(this.lookahead[1], this.getT());
+            expr = new Bool(this.lookahead[1], this.lookahead);
             this.matchToken(CT_LOG);
         } else if (!cond.isConstant && this.lookahead[0] === '(') {
             this.matchLexeme('(');
@@ -642,22 +697,29 @@ class SyntAnalyzer {
 
     functionCall(id) {
         if (this.lookahead[1] === '(') {
-            let args = null;
+            const funcToken = this.lookahead;
             this.matchLexeme('(');
-            args = this.argumentList();
+            const args = this.argumentList();
             this.matchLexeme(')');
 
-            return new FunctionCall(id, args, this.getT());
+            return new FunctionCall(id, args, funcToken);
         }
 
         id.arrayAccess = this.arrayAccess();
-
         return id;
+    }
+
+    reservedFunctionCall() {
+        const idToken = this.lookahead;
+        this.matchToken(RES_WORD);
+        this.matchLexeme('(');
+        const args = this.argumentList();
+        this.matchLexeme(')');
+        return new RES_FUNCS[idToken[1]](args, idToken);
     }
 
     argumentList() {
         let args = null;
-        let aux = null;
 
         if (
             this.lookahead[1] === '+'
@@ -669,13 +731,18 @@ class SyntAnalyzer {
             || this.lookahead[0] === CT_ALF
             || this.lookahead[0] === IDENTI
         ) {
-            args = this.logicalOrExpression();
-            aux = args;
+            args = [];
+            let param = this.logicalOrExpression();
+            if (param) {
+                args.push(param);
+            }
 
             while (this.lookahead[1] === ',') {
                 this.matchLexeme(',');
-                aux.next = this.logicalOrExpression();
-                aux = aux.next;
+                param = this.logicalOrExpression();
+                if (param) {
+                    args.push(param);
+                }
             }
         }
 

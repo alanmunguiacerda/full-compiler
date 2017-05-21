@@ -12,7 +12,7 @@ class Parameter extends TreeNode {
         const type = this.dataType.getType();
 
         if (type === 'E') {
-            ErrorManager.sem(this.row, this.col, `Invalid paramter type "${this.dataType.symbol}"`);
+            ErrorManager.sem(this.row, this.col, `Invalid parameter type "${this.dataType.symbol}"`);
         }
     }
 }

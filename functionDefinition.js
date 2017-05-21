@@ -30,6 +30,8 @@ class FunctionDefinition extends TreeNode {
                 is: 'VAR',
                 type: defParam.dataType.getType(),
                 context: identifier,
+                dimensions: 0,
+                sizes: [],
             };
             defParam = defParam.next;
         }

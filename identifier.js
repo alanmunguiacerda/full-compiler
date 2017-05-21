@@ -5,7 +5,10 @@ class Identifier extends TreeNode {
     constructor(symbol, token) {
         super(symbol, token);
 
-        this.arrayAccess = {};
+        this.arrayAccess = {
+            dimensions: 0,
+            accessExpressions: [],
+        };
     }
 
     checkSemantic() {
@@ -18,12 +21,28 @@ class Identifier extends TreeNode {
             return;
         }
 
-        if (record.is === 'VAR' || record.is === 'CONST') {
-            this.type = record.type;
-            return;
+        if (record.is !== 'VAR' && record.is !== 'CONST') {
+            ErrorManager.sem(this.row, this.col, `"${this.symbol}" is a function`);
         }
-        // TODO: check array access
-        ErrorManager.sem(this.row, this.col, `"${this.symbol}" is a function`);
+
+        if (this.arrayAccess.dimensions) {
+            this.arrayAccess.accessExpressions.forEach((expression) => {
+                expression.checkSemantic();
+                if (expression.type !== 'I') {
+                    ErrorManager.sem(expression.row, expression.col, `Index can't be of type ${expression.type}`);
+                }
+            });
+        }
+
+        const accessDimensions = this.arrayAccess.dimensions;
+
+        if (!record.dimensions && accessDimensions) {
+            ErrorManager.sem(this.row, this.col, `"${this.symbol}" is not an array`);
+        } else if (record.dimensions !== accessDimensions) {
+            ErrorManager.sem(this.row, this.col, `"${this.symbol}" takes exactly ${record.dimensions} dimensions`);
+        }
+
+        this.type = record.type;
     }
 }
 

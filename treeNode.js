@@ -68,7 +68,7 @@ class TreeNode {
         }
 
         while (node) {
-            node.checkSemantic(cond.dataType);
+            node.checkSemantic(cond);
             node = node.next;
         }
 
