@@ -59,7 +59,7 @@ class TreeNode {
     }
 
     checkSemantic() {
-        console.log('NOT IMPLEMENTED YET');
+        // DO NOTHING
     }
 
     static checkSemanticOnList(node, cond = {}) {
