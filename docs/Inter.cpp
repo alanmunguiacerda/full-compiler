@@ -96,7 +96,7 @@ void tokeniza(string lin) {
     }
 }
 void leeArch(string entrada) {
-   ifstream fuente( entrada );
+   ifstream fuente( entrada.c_str() );
    string linea;
    if( fuente.is_open() ) {
       while( getline( fuente, linea) ) {
