@@ -5,17 +5,18 @@ class UnaryExpression extends TreeNode {
     constructor(symbol, expr, token) {
         super(null, token);
         this.symbol = symbol;
-        this.expr = expr;
+        this.expr = expr || new TreeNode(null, token);
     }
 
     checkSemantic() {
+        this.expr.checkSemantic();
         if (this.expr.type === 'I' || this.expr.type === 'F') {
             this.type = this.expr.type;
             return;
         }
 
         this.type = 'E';
-        ErrorManager.sem(this.row, this.col, `Unary operator can't be applyed to type ${this.expr.type}`);
+        ErrorManager.sem(this.row, this.col, `Unary operator can't be applyed to type "${this.expr.type}"`);
     }
 }
 

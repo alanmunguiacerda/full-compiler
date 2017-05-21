@@ -1,7 +1,7 @@
 constante decimal PI := 3.1415;
 constante entero MAX := 30;
 
-entero vector[MAX], matriz[MAX][MAX], i, n, j;
+entero vector[MAX], matriz[MAX][MAX], i, n, j, k;
 decimal r, s;
 alfabetico alfa, beta;
 logico bandera := falso;
@@ -17,7 +17,7 @@ fin;
 entero funcion FacIter( entero n )
 entero facto := 1;
 inicio
-  para i en rango s a n incr 1
+  para i en rango 0 a n incr 1
      facto := facto * i;
   regresa facto;
 fin;
@@ -47,7 +47,7 @@ inicio
          caso 2: imprimenl("Factorial Iterativo de ", n, " es= ",
  FacIter( n ) );
        interrumpe;
-         caso 3: regresa d;
+         caso 3: regresa;
          otro caso: imprimenl("Opcion No valida");
        fin; //Opcion
       fin; // Mientras
@@ -70,7 +70,7 @@ inicio
   iterar mientras (verdadero)
   inicio
        imprimenl("i= ", i);
-       si (i = 7) interrumpe;
+       si (i = 5) interrumpe;
        i := i + 1;
   fin;
 fin;
@@ -80,7 +80,7 @@ inicio
  para i en rango 1 a k
  inicio
     imprime("Vector[", i, "]: " );
-    lee ( vector [ i ] );
+    lee ( vector[i] );
  fin;
 fin;
 
@@ -101,6 +101,7 @@ procedimiento ImpVec( entero k)
 inicio
   para i en rango 1 a k
      imprimenl("Vector[", i, "]= ", vector[i] );
+  regresa;
 fin;
 
 procedimiento LeeMat(entero k )
@@ -146,10 +147,10 @@ inicio
   si (Compara( r, s ))
     imprimenl( "Verdadero");
   sino
-    Imprimenl("Falso");
+    imprimenl("Falso");
   LeeVec( 5 );
   OrdBurbuja( 5 );
-  Imprimenl();
+  imprimenl();
   imprimenl("*** Arreglo Ordenado ***");
   ImpVec( 5 );
   imprime("Dame elementos de Matriz NxN: ");

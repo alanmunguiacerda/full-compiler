@@ -1,4 +1,5 @@
 const TreeNode = require('./treeNode');
+const ErrorManager = require('./errorManager');
 
 class CaseStatement extends TreeNode {
     constructor(cond, stms, token) {
@@ -8,8 +9,21 @@ class CaseStatement extends TreeNode {
         this.stms = stms;
     }
 
-    checkSemantic() {
-        console.log('CHECKING CASE');
+    checkSemantic(cond) {
+        const { isSwitch, dataType } = cond;
+
+        if (!isSwitch) {
+            ErrorManager.sem(this.cond.row, this.cond.col, 'Case declared outside witch statement');
+        }
+
+        if (this.cond) {
+            this.cond.checkSemantic();
+            if (dataType !== this.cond.type) {
+                ErrorManager.sem(this.cond.row, this.cond.col, `Can't compare ${dataType} with ${this.cond.type}`);
+            }
+        }
+
+        TreeNode.checkSemanticOnList(this.stms);
     }
 }
 
