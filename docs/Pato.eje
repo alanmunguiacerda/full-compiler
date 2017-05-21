@@ -1,0 +1,59 @@
+vec,V,E,10,0,#,
+n,V,E,0,0,#,
+fib,V,E,0,0,#,
+fibant,V,E,0,0,#,
+tmp,V,E,0,0,#,
+i,V,E,0,0,#,
+j,V,E,0,0,#,
+a,V,E,0,0,#,
+s,V,A,0,0,#,
+n,P,E,0,0,#,
+facrec,F,E,1,0,#,
+_E1,I,I,10,0,#,
+_E3,I,I,16,0,#,
+_E2,I,I,20,0,#,
+_P,I,I,20,0,#,
+fmt,L,I,0,0,#,
+_E5,I,I,34,0,#,
+fmt,L,I,0,0,#,
+_E4,I,I,39,0,#,
+@
+1 STO 0, n
+2 LOD j, 0
+3 LOD i, 0
+4 OPR 0, 10
+5 JMC F, _E1
+6 LIT 1, 0
+7 STO 0, facrec
+8 OPR 0, 1
+9 JMP 0, _E2
+10 LOD n, 0
+11 LOD _E3, 0
+12 LOD n, 0
+13 LIT 1, 0
+14 OPR 0, 3
+15 CAL facrec, 0
+16 LOD facrec, 0
+17 OPR 0, 4
+18 STO 0, facrec
+19 OPR 0, 1
+20 LIT "CUCEI Universidad de Guadalajara Mayo 12", 0
+21 OPR 0, 21
+22 LIT 4, 0
+23 STO 0, i
+24 LOD i, 0
+25 LIT 200, 0
+26 OPR 0, 11
+27 JMC F, _E4
+28 JMP 0, _E5
+29 LOD i, 0
+30 LIT 8, 0
+31 OPR 0, 2
+32 STO 0, i
+33 JMP 0, 24
+34 LIT "i=", 0
+35 OPR 0, 20
+36 LOD i, 0
+37 OPR 0, 21
+38 JMP 0, 29
+39 OPR 0, 0

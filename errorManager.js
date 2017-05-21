@@ -1,18 +1,20 @@
 let errorCount = 0;
-const MAX_ERRORS = 1000;
+const MAX_ERRORS = 10;
 const ERROR_TYPES = {
     lex: 'LEX ERROR',
     syn: 'SYNT ERROR',
     une: 'UNEX TOKEN',
     sem: 'SEM ERROR',
 };
+const errors = [];
+const error = (row, col, message) => ({ row, col, message });
 
 class ErrorManager {
     static genericError(type, row, col, message) {
         const errorType = ERROR_TYPES[type];
-        console.log(`[${row}, ${col}] [${errorType}] ${message}`);
+        message = `[${row}, ${col}] [${errorType}] ${message}`;
+        errors.push(error(row, col, message))
         errorCount += 1;
-        ErrorManager.raiseError();
     }
 
     static lex(row, col, message) {
@@ -41,6 +43,19 @@ class ErrorManager {
 
     static abort() {
         process.exit();
+    }
+
+    static logErrors() {
+        const sorted = errors.sort((e1, e2) => {
+            if (e1.row === e2.row) {
+                return e1.col > e2.col ? 1 : -1;
+            }
+            return e1.row > e2.row ? 1 : -1;
+        })
+        if (sorted.length) {
+            console.log('--------------------Errors--------------------');
+        }
+        sorted.slice(0, MAX_ERRORS).forEach((e) => console.log(e.message));
     }
 }
 

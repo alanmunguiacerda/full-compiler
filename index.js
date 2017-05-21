@@ -1,6 +1,7 @@
 const LexAnalyzer = require('./lexAnalyzer');
 const SyntAnalyzer = require('./syntAnalyzer');
 const TreeNode = require('./treeNode');
+const ErrorManager = require('./errorManager');
 
 const args = process.argv.slice(2);
 
@@ -11,3 +12,4 @@ const lexAnalyzer = new LexAnalyzer(filename);
 const syntAnalyzer = new SyntAnalyzer(lexAnalyzer);
 const tree = syntAnalyzer.analyze();
 TreeNode.checkSemanticOnList(tree);
+ErrorManager.logErrors();
