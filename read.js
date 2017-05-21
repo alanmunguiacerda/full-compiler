@@ -1,5 +1,6 @@
 const TreeNode = require('./treeNode');
 const ErrorManager = require('./errorManager');
+const Identifier = require('./identifier');
 
 class Read extends TreeNode {
     constructor(params, token) {
@@ -15,7 +16,17 @@ class Read extends TreeNode {
         }
 
         const param = this.params[0];
-        param.checkSemantic();
+
+        if (!(param instanceof Identifier)) {
+            ErrorManager.sem(param.row, param.col, '"lee" expects a variable as parameter');
+            return;
+        }
+
+        const record = param.checkSemantic();
+
+        if (record && record.is === 'CONST') {
+            ErrorManager.sem(param.row, param.col, `Can't override constant "${record.id}"`);
+        }
     }
 }
 

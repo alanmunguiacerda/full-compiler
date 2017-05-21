@@ -15,7 +15,7 @@ class BinaryExpression extends TreeNode {
         const globalKey = `${this.left.symbol}@g`;
         const record = TreeNode.symTable[globalKey];
         if (record && record.is === 'CONST') {
-            ErrorManager.sem(this.left.row, this.left.col, `Cant override "${this.left.symbol}"`);
+            ErrorManager.sem(this.left.row, this.left.col, `Cant override constant "${this.left.symbol}"`);
             return false;
         }
         return true;

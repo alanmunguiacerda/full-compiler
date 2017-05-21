@@ -18,7 +18,7 @@ class Identifier extends TreeNode {
 
         if (!record) {
             ErrorManager.sem(this.row, this.col, `"${this.symbol}" is undefined`);
-            return;
+            return null;
         }
 
         if (record.is !== 'VAR' && record.is !== 'CONST') {
@@ -43,6 +43,7 @@ class Identifier extends TreeNode {
         }
 
         this.type = record.type;
+        return record;
     }
 }
 
