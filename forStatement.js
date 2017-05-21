@@ -1,6 +1,11 @@
 const TreeNode = require('./treeNode');
 const ErrorManager = require('./errorManager');
 
+const FOR_COND = {
+    canBreak: true,
+    canContinue: true,
+};
+
 class ForStatement extends TreeNode {
     constructor(initializer, condition, step, stms, token) {
         super(null, token);
@@ -39,7 +44,7 @@ class ForStatement extends TreeNode {
             type = 'E';
         }
 
-        TreeNode.checkSemanticOnList(this.stms);
+        TreeNode.checkSemanticOnList(this.stms, FOR_COND);
 
         this.type = type;
     }

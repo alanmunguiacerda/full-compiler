@@ -15,14 +15,6 @@ class TreeNode {
         }
     }
 
-    static get params() {
-        return params;
-    }
-
-    static get availableRegisters() {
-        return availableRegisters;
-    }
-
     static get labels() {
         return labels;
     }

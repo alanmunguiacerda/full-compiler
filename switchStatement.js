@@ -1,5 +1,10 @@
 const TreeNode = require('./treeNode');
 
+const SWITCH_COND = {
+    canBreak: true,
+    isSwitch: true,
+};
+
 class SwitchStatement extends TreeNode {
     constructor(expr, cases, token) {
         super(token);
@@ -10,9 +15,8 @@ class SwitchStatement extends TreeNode {
 
     checkSemantic() {
         this.expr.checkSemantic();
-        const isSwitch = true;
-        const dataType = this.expr.type;
-        TreeNode.checkSemanticOnList(this.cases, { isSwitch, dataType });
+        SWITCH_COND.dataType = this.expr.type;
+        TreeNode.checkSemanticOnList(this.cases, SWITCH_COND);
     }
 }
 

@@ -13,7 +13,7 @@ class CaseStatement extends TreeNode {
         const { isSwitch, dataType } = cond;
 
         if (!isSwitch) {
-            ErrorManager.sem(this.cond.row, this.cond.col, 'Case declared outside witch statement');
+            ErrorManager.sem(this.cond.row, this.cond.col, 'Case declared outside switch statement');
         }
 
         if (this.cond) {

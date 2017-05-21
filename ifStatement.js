@@ -9,7 +9,7 @@ class IfStatement extends TreeNode {
         this.elseStms = elseStms;
     }
 
-    checkSemantic() {
+    checkSemantic(cond) {
         this.expr.checkSemantic();
 
         if (this.expr.type !== 'B') {
@@ -18,8 +18,8 @@ class IfStatement extends TreeNode {
             this.type = 'V';
         }
 
-        TreeNode.checkSemanticOnList(this.stms);
-        TreeNode.checkSemanticOnList(this.elseStms);
+        TreeNode.checkSemanticOnList(this.stms, cond);
+        TreeNode.checkSemanticOnList(this.elseStms, cond);
     }
 }
 

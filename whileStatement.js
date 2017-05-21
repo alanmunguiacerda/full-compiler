@@ -1,6 +1,11 @@
 const TreeNode = require('./treeNode');
 const ErrorManager = require('./errorManager');
 
+const WHILE_COND = {
+    canBreak: true,
+    canContinue: true,
+};
+
 class WhileStatement extends TreeNode {
     constructor(expr, stms, token) {
         super(null, token);
@@ -15,7 +20,7 @@ class WhileStatement extends TreeNode {
             ErrorManager.sem(this.expr.row, this.expr.col, 'Condition must be of type "B"');
         }
 
-        TreeNode.checkSemanticOnList(this.stms);
+        TreeNode.checkSemanticOnList(this.stms, WHILE_COND);
         this.type = 'V';
     }
 }

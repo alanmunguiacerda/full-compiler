@@ -1,8 +1,15 @@
 const TreeNode = require('./treeNode');
+const ErrorManager = require('./errorManager');
 
 class ContinueStatement extends TreeNode {
-    checkSemantic() {
-        console.log('CHECKING CONTINUE');
+    constructor(token) {
+        super(null, token);
+    }
+
+    checkSemantic(cond = {}) {
+        if (!cond.canContinue) {
+            ErrorManager.sem(this.row, this.col, 'Can\'t continue outside <for|while>');
+        }
     }
 }
 
