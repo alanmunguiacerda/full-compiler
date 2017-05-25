@@ -10,6 +10,10 @@ const errors = [];
 const error = (row, col, message) => ({ row, col, message });
 
 class ErrorManager {
+    static get length() {
+        return errors.length;
+    }
+
     static genericError(type, row, col, message) {
         const errorType = ERROR_TYPES[type];
         message = `[${row}, ${col}] [${errorType}] ${message}`;

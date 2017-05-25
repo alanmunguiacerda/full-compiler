@@ -29,10 +29,15 @@ class ReturnStatement extends TreeNode {
     }
 
     generateCode() {
-        this.expr.generateCode();
-        const { line, arrayToPush } = TreeNode.arrayToPush;
-        arrayToPush.push(`${line} STO 0, ${TreeNode.context}@g`);
-        arrayToPush.push(`${line + 1} OPR 0, 1`);
+        const arrayToPush = TreeNode.arrayToPush.arrayToPush;
+        let line;
+        if (this.expr) {
+            this.expr.generateCode();
+            line = TreeNode.arrayToPush.line;
+            arrayToPush.push(`${line} STO 0, ${TreeNode.context}@g`);
+        }
+        line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} OPR 0, 1`);
     }
 }
 

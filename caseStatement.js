@@ -3,7 +3,7 @@ const ErrorManager = require('./errorManager');
 
 class CaseStatement extends TreeNode {
     constructor(cond, stms, token) {
-        super(token);
+        super(null, token);
 
         this.cond = cond;
         this.stms = stms;
@@ -23,7 +23,7 @@ class CaseStatement extends TreeNode {
             }
         }
 
-        TreeNode.checkSemanticOnList(this.stms);
+        TreeNode.checkSemanticOnList(this.stms, cond);
     }
 }
 

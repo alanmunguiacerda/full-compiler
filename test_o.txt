@@ -41,10 +41,16 @@ inicio
       fin;
       haz opcion (opc)
       inicio
-         caso 1: imprimenl("Factorial Recursivo de ", n, " es= ",  FacRec( n ) );
-               interrumpe;
-         caso 2: imprimenl("Factorial Iterativo de ", n, " es= ",  FacIter( n ) );
-              interrumpe;
+         caso 1:
+            inicio
+            imprimenl("Factorial Recursivo de ", n, " es= ",  FacRec( n ) );
+            interrumpe;
+            fin;
+         caso 2:
+            inicio
+            imprimenl("Factorial Iterativo de ", n, " es= ",  FacIter( n ) );
+            interrumpe;
+            fin;
          caso 3: regresa;
          otro caso: imprimenl("Opcion No valida");
        fin; //Opcion

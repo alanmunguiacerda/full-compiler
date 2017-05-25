@@ -1,3 +1,5 @@
+const fs = require('fs');
+
 const LexAnalyzer = require('./lexAnalyzer');
 const SyntAnalyzer = require('./syntAnalyzer');
 const TreeNode = require('./treeNode');
@@ -7,12 +9,15 @@ const args = process.argv.slice(2);
 
 const filename = args[0] || 'test.txt';
 
-console.log(`Iniciando análisis de archivo: ${filename}`);
+console.log(`Compiling file: ${filename}`);
 const lexAnalyzer = new LexAnalyzer(filename);
 const syntAnalyzer = new SyntAnalyzer(lexAnalyzer);
 const tree = syntAnalyzer.analyze();
 TreeNode.checkSemanticOnList(tree);
 ErrorManager.logErrors();
-// TreeNode.getCode(tree);
-// console.log(TreeNode.codeInits);
-console.log(TreeNode.getCode(tree).join('\n'));
+if (!ErrorManager.length) {
+    const code = TreeNode.getCode(tree);
+    fs.writeFile('teTruena.eje', code.join('\n'), () => {
+        console.log('Object generated');
+    });
+}

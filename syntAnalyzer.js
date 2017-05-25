@@ -406,7 +406,6 @@ class SyntAnalyzer {
             const breakToken = this.lookahead;
             this.matchLexeme('interrumpe');
             this.matchLexeme(';');
-
             return new BreakStatement(breakToken);
         }
 

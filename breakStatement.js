@@ -14,7 +14,6 @@ class BreakStatement extends TreeNode {
 
     generateCode(cond = {}) {
         const { line, arrayToPush } = TreeNode.arrayToPush;
-
         arrayToPush.push(`${line} JMP 0, ${cond.breakTo}`);
     }
 }
