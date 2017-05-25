@@ -18,6 +18,6 @@ ErrorManager.logErrors();
 if (!ErrorManager.length) {
     const code = TreeNode.getCode(tree);
     fs.writeFile('teTruena.eje', code.join('\n'), () => {
-        console.log('Object generated');
+        console.log('teTruena.eje generated');
     });
 }
