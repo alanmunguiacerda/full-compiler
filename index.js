@@ -13,3 +13,6 @@ const syntAnalyzer = new SyntAnalyzer(lexAnalyzer);
 const tree = syntAnalyzer.analyze();
 TreeNode.checkSemanticOnList(tree);
 ErrorManager.logErrors();
+// TreeNode.getCode(tree);
+// console.log(TreeNode.codeInits);
+console.log(TreeNode.getCode(tree).join('\n'));

@@ -11,6 +11,10 @@ class Declaration extends TreeNode {
         const dataType = this.dataType.getType();
         TreeNode.checkSemanticOnList(this.declarator, { dataType });
     }
+
+    generateCode() {
+        TreeNode.cascadeCode(this.declarator);
+    }
 }
 
 module.exports = Declaration;

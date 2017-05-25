@@ -10,6 +10,12 @@ class Integer extends TreeNode {
     checkSemantic() {
         this.type = 'I';
     }
+
+    generateCode() {
+        const { line, arrayToPush } = TreeNode.arrayToPush;
+
+        arrayToPush.push(`${line} LIT ${this.symbol}, 0`);
+    }
 }
 
 module.exports = Integer;

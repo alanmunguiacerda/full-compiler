@@ -21,6 +21,24 @@ class IfStatement extends TreeNode {
         TreeNode.checkSemanticOnList(this.stms, cond);
         TreeNode.checkSemanticOnList(this.elseStms, cond);
     }
+
+    generateCode(cond) {
+        this.expr.generateCode();
+
+        const falseLbl = TreeNode.getUniqueLabel('false');
+        const endIfLbl = TreeNode.getUniqueLabel('endIf');
+
+        const { line, arrayToPush } = TreeNode.arrayToPush;
+        arrayToPush.push(`${line} JMC F, ${falseLbl}`);
+        TreeNode.cascadeCode(this.stms, cond);
+
+        const endStmsLine = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${endStmsLine} JMP 0, ${endIfLbl}`);
+        TreeNode.codeLabels.push(`${falseLbl},I,I,${endStmsLine + 1},0,#,`);
+        TreeNode.cascadeCode(this.elseStms, cond);
+        const endElseLine = TreeNode.arrayToPush.line;
+        TreeNode.codeLabels.push(`${endIfLbl},I,I,${endElseLine},0,#,`);
+    }
 }
 
 module.exports = IfStatement;

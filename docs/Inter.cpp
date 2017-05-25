@@ -145,10 +145,10 @@ void exec()
     if( pc >= 0 ) pc = tabsim[pc].di1;
     while ( pc >= 0 && pc <= conp )
     {
-        /*if (pila.size()){
-        cout << endl << "top: " << pila.top() << " line:" << pc << endl;
-        cin.get();
-        }*/
+        // if (pila.size()){
+        //     cout << endl << "top: " << pila.top() << " line:" << pc << endl;
+        //     cin.get();
+        // }
         /* cout << pc << " "
              << prgm[pc].mnemo << " "
              << prgm[pc].dir1 << ","

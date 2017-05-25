@@ -13,7 +13,7 @@ class ReturnStatement extends TreeNode {
             this.expr.checkSemantic();
             exprType = this.expr.type;
         }
-        const parentFunc = TreeNode.symTable[TreeNode.context];
+        const parentFunc = TreeNode.symTable[`${TreeNode.context}@g`];
 
         if (!parentFunc) {
             ErrorManager.sem(this.row, this.col, 'Can\'t return  outside function');
@@ -26,6 +26,13 @@ class ReturnStatement extends TreeNode {
         }
 
         this.type = parentFunc.type;
+    }
+
+    generateCode() {
+        this.expr.generateCode();
+        const { line, arrayToPush } = TreeNode.arrayToPush;
+        arrayToPush.push(`${line} STO 0, ${TreeNode.context}@g`);
+        arrayToPush.push(`${line + 1} OPR 0, 1`);
     }
 }
 

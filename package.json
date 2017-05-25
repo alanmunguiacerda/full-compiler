@@ -13,7 +13,8 @@
   "author": "Alan Munguia Cerda",
   "license": "ISC",
   "dependencies": {
-    "lex": "^1.7.9"
+    "lex": "^1.7.9",
+    "underscore": "^1.8.3"
   },
   "directories": {
     "doc": "docs"

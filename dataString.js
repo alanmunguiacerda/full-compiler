@@ -10,6 +10,12 @@ class TString extends TreeNode {
     checkSemantic() {
         this.type = 'S';
     }
+
+    generateCode() {
+        const { line, arrayToPush } = TreeNode.arrayToPush;
+
+        arrayToPush.push(`${line} LIT ${this.symbol}, 0`);
+    }
 }
 
 module.exports = TString;

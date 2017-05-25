@@ -11,6 +11,12 @@ class BreakStatement extends TreeNode {
             ErrorManager.sem(this.row, this.col, 'Can\'t break outside <for|while|switch>');
         }
     }
+
+    generateCode(cond = {}) {
+        const { line, arrayToPush } = TreeNode.arrayToPush;
+
+        arrayToPush.push(`${line} JMP 0, ${cond.breakTo}`);
+    }
 }
 
 module.exports = BreakStatement;

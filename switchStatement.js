@@ -18,6 +18,10 @@ class SwitchStatement extends TreeNode {
         SWITCH_COND.dataType = this.expr.type;
         TreeNode.checkSemanticOnList(this.cases, SWITCH_COND);
     }
+
+    generateCode() {
+        
+    }
 }
 
 module.exports = SwitchStatement;

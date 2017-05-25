@@ -10,6 +10,12 @@ class Float extends TreeNode {
     checkSemantic() {
         this.type = 'F';
     }
+
+    generateCode() {
+        const { line, arrayToPush } = TreeNode.arrayToPush;
+
+        arrayToPush.push(`${line} LIT ${this.symbol}, 0`);
+    }
 }
 
 module.exports = Float;

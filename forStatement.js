@@ -29,7 +29,7 @@ class ForStatement extends TreeNode {
             type = 'E';
         }
 
-        if (step.type !== 'I') {
+        if (step.right.type !== 'I') {
             ErrorManager.sem(step.row, step.col, 'For step must be of type "I"');
             type = 'E';
         }
@@ -47,6 +47,35 @@ class ForStatement extends TreeNode {
         TreeNode.checkSemanticOnList(this.stms, FOR_COND);
 
         this.type = type;
+    }
+
+    generateCode() {
+        const trueLbl = TreeNode.getUniqueLabel('true');
+        const falseLbl = TreeNode.getUniqueLabel('false');
+        const forLbl = TreeNode.getUniqueLabel('for');
+        const forIncrLbl = TreeNode.getUniqueLabel('forIncr');
+        const arrayToPush = TreeNode.arrayToPush.arrayToPush;
+        const cond = { breakTo: falseLbl, continueTo: forIncrLbl };
+
+        this.initializer.generateCode();
+        let line = TreeNode.arrayToPush.line;
+        TreeNode.codeLabels.push(`${forLbl},I,I,${line},0,#,`);
+        this.condition.generateCode();
+
+        line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} JMC V, ${trueLbl}`);
+        arrayToPush.push(`${line + 1} JMP 0, ${falseLbl}`);
+        line = TreeNode.arrayToPush.line;
+        TreeNode.codeLabels.push(`${forIncrLbl},I,I,${line},0,#,`);
+        this.step.generateCode();
+        line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} JMP 0, ${forLbl}`);
+        line = TreeNode.arrayToPush.line;
+        TreeNode.codeLabels.push(`${trueLbl},I,I,${line},0,#,`);
+        TreeNode.cascadeCode(this.stms, cond);
+        line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} JMP 0, ${forIncrLbl}`);
+        TreeNode.codeLabels.push(`${falseLbl},I,I,${line + 1},0,#,`);
     }
 }
 

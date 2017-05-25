@@ -21,7 +21,9 @@ class VariableDeclarator extends TreeNode {
     checkSemantic(cond) {
         const type = cond.dataType;
         const id = this.id.symbol;
-        const register = TreeNode.symTable[id];
+        const context = TreeNode.context;
+        const key = `${id}@${context}`;
+        const register = TreeNode.symTable[key];
 
         if (register) {
             ErrorManager.sem(this.id.row, this.id.col, `Variable "${id}" already declared`);
@@ -48,16 +50,39 @@ class VariableDeclarator extends TreeNode {
                     ErrorManager.sem(dimension.row, dimension.col, `Dimension can't be of type ${dimension.type}`);
                     return;
                 }
-                sizes.push(dimension.symbol);
+
+                let dimSize = dimension.symbol;
+                if (isNaN(dimSize)) {
+                    const recordKey = `${dimension.symbol}@g`;
+                    const record = TreeNode.symTable[recordKey];
+                    dimSize = record.value;
+                }
+
+                sizes.push(dimSize);
             });
         }
 
         const is = this.isConstant ? 'CONST' : 'VAR';
         const dimensions = this.dimensions;
-        const context = TreeNode.context;
-        const key = `${id}@${context}`;
+        const record = { id, is, type, dimensions, sizes, context };
 
-        TreeNode.symTable[key] = { id, is, type, dimensions, sizes, context };
+        if (this.isConstant) {
+            record.value = this.init.symbol;
+        }
+
+        TreeNode.symTable[key] = record;
+    }
+
+    generateCode() {
+        if (!this.init) {
+            return;
+        }
+
+        const key = `${this.id.symbol}@${TreeNode.context}`;
+        this.init.generateCode();
+        const { line, arrayToPush } = TreeNode.arrayToPush;
+
+        arrayToPush.push(`${line} STO 0, ${key}`);
     }
 }
 

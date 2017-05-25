@@ -73,9 +73,12 @@ class SyntAnalyzer {
         let type = null;
 
         if (this.lookahead[1] === 'programa') {
+            const mainToken = this.lookahead;
+            type = new DataType('void', mainToken);
+            const identifier = new Identifier('main', mainToken);
             this.matchLexeme('programa');
             node = this.compoundStatement({ isMain: true });
-            return node;
+            return new FunctionDefinition(type, identifier, null, node, mainToken);
         }
 
         const token = this.lookahead;
@@ -87,7 +90,7 @@ class SyntAnalyzer {
             this.matchToken(RES_WORD);
             type = this.typeEspecifier();
             node = this.constantDeclaration(type);
-        } else {
+        } else if (RES_TYPES.indexOf(this.lookahead[1]) > -1) {
             type = this.typeEspecifier();
             let isFunc = false;
             if (this.lookahead[1] === 'funcion') {
@@ -95,6 +98,10 @@ class SyntAnalyzer {
                 isFunc = true;
             }
             node = this.declaration(type, { isFunc });
+        } else {
+            this.expected(`${RES_TYPES.join('|')}|constante`);
+            this.nToken();
+            return this.externalDeclaration();
         }
 
         if (node) {
@@ -353,18 +360,21 @@ class SyntAnalyzer {
             initializer = new BinaryExpression(':=', id, initialValue, this.lookahead);
             this.matchLexeme('a');
             stopCondition = this.logicalOrExpression();
-            condition = new BinaryExpression('=', id, stopCondition, this.lookahead);
+            const op = this.lookahead[1] === 'decr' ? '>=' : '<=';
+            condition = new BinaryExpression(op, id, stopCondition, this.lookahead);
             if (
                 this.lookahead[1] === 'incr'
                 || this.lookahead[1] === 'decr'
             ) {
                 const tok = this.lookahead;
                 this.matchToken(RES_WORD);
-                step = tok[1] === 'decr'
-                    ? new UnaryExpression('-', this.logicalOrExpression(), tok)
-                    : this.logicalOrExpression();
+                const opStep = tok[1] === 'decr' ? '-' : '+';
+                const obStep = new BinaryExpression(opStep, id, this.logicalOrExpression(), tok);
+                step = new BinaryExpression(':=', id, obStep, tok);
             } else {
-                step = new Integer(1, this.lookahead);
+                const defStep = new Integer(1, this.lookahead);
+                const sumStep = new BinaryExpression('+', id, defStep, this.lookahead);
+                step = new BinaryExpression(':=', id, sumStep, this.lookahead);
             }
             stm = this.statement();
 

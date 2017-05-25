@@ -23,6 +23,24 @@ class WhileStatement extends TreeNode {
         TreeNode.checkSemanticOnList(this.stms, WHILE_COND);
         this.type = 'V';
     }
+
+    generateCode() {
+        const falseLbl = TreeNode.getUniqueLabel('false');
+        const whileLbl = TreeNode.getUniqueLabel('while');
+        const arrayToPush = TreeNode.arrayToPush.arrayToPush;
+        const cond = { breakTo: falseLbl, continueTo: whileLbl };
+        let line = TreeNode.arrayToPush.line;
+
+        this.expr.generateCode();
+
+        TreeNode.codeLabels.push(`${whileLbl},I,I,${line},0,#,`);
+        line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} JMC F, ${falseLbl}`);
+        TreeNode.cascadeCode(this.stms, cond);
+        line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} JMP 0, ${whileLbl}`);
+        TreeNode.codeLabels.push(`${falseLbl},I,I,${line + 1},0,#,`);
+    }
 }
 
 module.exports = WhileStatement;

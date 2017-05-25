@@ -34,7 +34,7 @@ class FunctionCall extends TreeNode {
 
     checkSemantic() {
         const identifier = this.id.symbol;
-        const funcDef = TreeNode.symTable[identifier];
+        const funcDef = TreeNode.symTable[`${identifier}@g`];
 
         if (!funcDef) {
             ErrorManager.sem(this.id.row, this.id.col, `"${identifier}" is not declared`);
@@ -48,6 +48,24 @@ class FunctionCall extends TreeNode {
         }
 
         ErrorManager.sem(this.id.row, this.id.col, `"${identifier}" is not a function`);
+    }
+
+    generateCode() {
+        const returnLbl = TreeNode.getUniqueLabel('return');
+        const arrayToPush = TreeNode.arrayToPush.arrayToPush;
+        const funcDef = TreeNode.symTable[`${this.id.symbol}@g`];
+        let line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} LOD ${returnLbl}, 0`);
+        this.args.forEach((arg) => {
+            arg.generateCode();
+        });
+        line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} CAL ${this.id.symbol}@g, 0`);
+        line += 1;
+        if (funcDef.type !== 'V') {
+            arrayToPush.push(`${line} LOD ${this.id.symbol}@g, 0`);
+        }
+        TreeNode.codeLabels.push(`${returnLbl},I,I,${line},0,#,`);
     }
 }
 

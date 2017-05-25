@@ -28,6 +28,21 @@ class Read extends TreeNode {
             ErrorManager.sem(param.row, param.col, `Can't override constant "${record.id}"`);
         }
     }
+
+    generateCode() {
+        const param = this.params[0];
+        const arrayToPush = TreeNode.arrayToPush.arrayToPush;
+        const contextKey = `${param.symbol}@${TreeNode.context}`;
+        const globalKey = `${param.symbol}@g`;
+
+        param.arrayAccess.accessExpressions.forEach((expression) => {
+            expression.generateCode();
+        });
+
+        const record = TreeNode.symTable[contextKey] || TreeNode.symTable[globalKey];
+        const line = TreeNode.arrayToPush.line;
+        arrayToPush.push(`${line} OPR ${record.id}@${record.context}, 19`);
+    }
 }
 
 module.exports = Read;

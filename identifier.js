@@ -21,7 +21,7 @@ class Identifier extends TreeNode {
             return null;
         }
 
-        if (record.is !== 'VAR' && record.is !== 'CONST') {
+        if (record.is !== 'VAR' && record.is !== 'CONST' && record.is !== 'PARAM') {
             ErrorManager.sem(this.row, this.col, `"${this.symbol}" is a function`);
         }
 
@@ -44,6 +44,21 @@ class Identifier extends TreeNode {
 
         this.type = record.type;
         return record;
+    }
+
+    generateCode(lod = true) {
+        const contextKey = `${this.symbol}@${TreeNode.context}`;
+        const globalKey = `${this.symbol}@g`;
+        const record = TreeNode.symTable[contextKey] || TreeNode.symTable[globalKey];
+        this.arrayAccess.accessExpressions.forEach((expression) => {
+            expression.generateCode();
+        });
+
+        const { line, arrayToPush } = TreeNode.arrayToPush;
+        if (lod) {
+            const lodInst = `${line} LOD ${record.id}@${record.context}, 0`;
+            arrayToPush.push(lodInst);
+        }
     }
 }
 

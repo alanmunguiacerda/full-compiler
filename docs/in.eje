@@ -1,0 +1,587 @@
+PI@g,C,R,0,0,#,
+MAX@g,C,E,0,0,#,
+vector@g,V,E,30,0,#,
+matriz@g,V,E,30,30,#,
+i@g,V,E,0,0,#,
+n@g,V,E,0,0,#,
+j@g,V,E,0,0,#,
+r@g,V,R,0,0,#,
+s@g,V,R,0,0,#,
+alfa@g,V,A,0,0,#,
+beta@g,V,A,0,0,#,
+bandera@g,V,L,0,0,#,
+n@FacRec,P,E,0,0,#,
+FacRec@g,F,E,1,0,#,
+n@FacIter,P,E,0,0,#,
+FacIter@g,F,E,21,0,#,
+facto@FacIter,V,E,0,0,#,
+ar@Concat,P,A,0,0,#,
+b@Concat,P,A,0,0,#,
+Concat@g,F,A,45,0,#,
+radio@VolCil,P,R,0,0,#,
+altura@VolCil,P,R,0,0,#,
+VolCil@g,F,R,55,0,#,
+Test@g,F,V,67,0,#,
+k@LeeVec,P,E,0,0,#,
+LeeVec@g,F,V,118,0,#,
+k@OrdBurbuja,P,E,0,0,#,
+OrdBurbuja@g,F,V,146,0,#,
+temp@OrdBurbuja,V,E,0,0,#,
+k@ImpVec,P,E,0,0,#,
+ImpVec@g,F,V,233,0,#,
+k@LeeMat,P,E,0,0,#,
+LeeMat@g,F,V,257,0,#,
+k@MulMat,P,E,0,0,#,
+v@MulMat,P,E,0,0,#,
+MulMat@g,F,V,298,0,#,
+k@ImpMat,P,E,0,0,#,
+ImpMat@g,F,V,335,0,#,
+ar@Compara,P,R,0,0,#,
+b@Compara,P,R,0,0,#,
+Compara@g,F,L,377,0,#,
+main@g,F,V,385,0,#,
+_P,I,I,385,0,#,
+_false_1,I,I,10,0,#,
+_return_1,I,I,16,0,#,
+_endIf_1,I,I,20,0,#,
+_for_1,I,I,26,0,#,
+_forIncr_1,I,I,31,0,#,
+_true_1,I,I,36,0,#,
+_false_2,I,I,41,0,#,
+_for_2,I,I,71,0,#,
+_forIncr_2,I,I,76,0,#,
+_true_2,I,I,81,0,#,
+_false_4,I,I,87,0,#,
+_endIf_2,I,I,87,0,#,
+_false_3,I,I,92,0,#,
+_while_1,I,I,94,0,#,
+_false_6,I,I,106,0,#,
+_endIf_3,I,I,106,0,#,
+_false_5,I,I,115,0,#,
+_for_3,I,I,121,0,#,
+_forIncr_3,I,I,126,0,#,
+_true_3,I,I,131,0,#,
+_false_7,I,I,143,0,#,
+_for_4,I,I,149,0,#,
+_forIncr_4,I,I,156,0,#,
+_true_4,I,I,161,0,#,
+_for_5,I,I,165,0,#,
+_forIncr_5,I,I,170,0,#,
+_true_5,I,I,175,0,#,
+_false_10,I,I,228,0,#,
+_endIf_4,I,I,228,0,#,
+_false_9,I,I,229,0,#,
+_false_8,I,I,230,0,#,
+_for_6,I,I,236,0,#,
+_forIncr_6,I,I,241,0,#,
+_true_6,I,I,246,0,#,
+_false_11,I,I,256,0,#,
+_for_7,I,I,260,0,#,
+_forIncr_7,I,I,265,0,#,
+_true_7,I,I,270,0,#,
+_for_8,I,I,272,0,#,
+_forIncr_8,I,I,277,0,#,
+_true_8,I,I,282,0,#,
+_false_13,I,I,296,0,#,
+_false_12,I,I,297,0,#,
+_for_9,I,I,302,0,#,
+_forIncr_9,I,I,307,0,#,
+_true_9,I,I,312,0,#,
+_for_10,I,I,314,0,#,
+_forIncr_10,I,I,319,0,#,
+_true_10,I,I,324,0,#,
+_false_15,I,I,333,0,#,
+_false_14,I,I,334,0,#,
+_for_11,I,I,338,0,#,
+_forIncr_11,I,I,343,0,#,
+_true_11,I,I,348,0,#,
+_for_12,I,I,350,0,#,
+_forIncr_12,I,I,355,0,#,
+_true_12,I,I,360,0,#,
+_false_17,I,I,375,0,#,
+_false_16,I,I,376,0,#,
+_return_2,I,I,403,0,#,
+_return_3,I,I,419,0,#,
+_false_18,I,I,424,0,#,
+_endIf_5,I,I,426,0,#,
+_return_4,I,I,429,0,#,
+_return_5,I,I,432,0,#,
+_return_6,I,I,439,0,#,
+_return_7,I,I,445,0,#,
+_return_8,I,I,449,0,#,
+_return_9,I,I,454,0,#,
+_return_10,I,I,456,0,#,
+_return_11,I,I,468,0,#,
+@
+1 STO 0, n@FacRec
+2 LOD n@FacRec, 0
+3 LIT 2, 0
+4 OPR 0, 9
+5 JMC F, _false_1
+6 LIT 1, 0
+7 STO 0, FacRec@g
+8 OPR 0, 1
+9 JMP 0, _endIf_1
+10 LOD n@FacRec, 0
+11 LOD _return_1, 0
+12 LOD n@FacRec, 0
+13 LIT 1, 0
+14 OPR 0, 3
+15 CAL FacRec@g, 0
+16 LOD FacRec@g, 0
+17 OPR 0, 4
+18 STO 0, FacRec@g
+19 OPR 0, 1
+20 OPR 0, 1
+21 STO 0, n@FacIter
+22 LIT 1, 0
+23 STO 0, facto@FacIter
+24 LIT 2, 0
+25 STO 0, i@g
+26 LOD i@g, 0
+27 LOD n@FacIter, 0
+28 OPR 0, 11
+29 JMC V, _true_1
+30 JMP 0, _false_2
+31 LOD i@g, 0
+32 LIT 1, 0
+33 OPR 0, 2
+34 STO 0, i@g
+35 JMP 0, _for_1
+36 LOD facto@FacIter, 0
+37 LOD i@g, 0
+38 OPR 0, 4
+39 STO 0, facto@FacIter
+40 JMP 0, _forIncr_1
+41 LOD facto@FacIter, 0
+42 STO 0, FacIter@g
+43 OPR 0, 1
+44 OPR 0, 1
+45 STO 0, b@Concat
+46 STO 0, ar@Concat
+47 LOD ar@Concat, 0
+48 LIT " ", 0
+49 OPR 0, 22
+50 LOD b@Concat, 0
+51 OPR 0, 22
+52 STO 0, Concat@g
+53 OPR 0, 1
+54 OPR 0, 1
+55 STO 0, altura@VolCil
+56 STO 0, radio@VolCil
+57 LOD PI@g, 0
+58 LOD radio@VolCil, 0
+59 LIT 2, 0
+60 OPR 0, 7
+61 OPR 0, 4
+62 LOD altura@VolCil, 0
+63 OPR 0, 4
+64 STO 0, VolCil@g
+65 OPR 0, 1
+66 OPR 0, 1
+67 LIT "TEST", 0
+68 OPR 0, 21
+69 LIT 1, 0
+70 STO 0, i@g
+71 LOD i@g, 0
+72 LIT 10, 0
+73 OPR 0, 11
+74 JMC V, _true_2
+75 JMP 0, _false_3
+76 LOD i@g, 0
+77 LIT 1, 0
+78 OPR 0, 2
+79 STO 0, i@g
+80 JMP 0, _for_2
+81 LOD i@g, 0
+82 LIT 5, 0
+83 OPR 0, 14
+84 JMC F, _false_4
+85 JMP 0, _forIncr_2
+86 JMP 0, _endIf_2
+87 LIT "i= ", 0
+88 OPR 0, 20
+89 LOD i@g, 0
+90 OPR 0, 21
+91 JMP 0, _forIncr_2
+92 LIT 1, 0
+93 STO 0, i@g
+94 LIT V, 0
+95 JMC F, _false_5
+96 LIT "i= ", 0
+97 OPR 0, 20
+98 LOD i@g, 0
+99 OPR 0, 21
+100 LOD i@g, 0
+101 LIT 7, 0
+102 OPR 0, 14
+103 JMC F, _false_6
+104 JMP 0, _false_5
+105 JMP 0, _endIf_3
+106 LOD i@g, 0
+107 LIT 1, 0
+108 OPR 0, 2
+109 STO 0, i@g
+110 LIT "nuevo=", 0
+111 OPR 0, 20
+112 LOD i@g, 0
+113 OPR 0, 21
+114 JMP 0, _while_1
+115 LIT "saliendo while", 0
+116 OPR 0, 21
+117 OPR 0, 1
+118 STO 0, k@LeeVec
+119 LIT 1, 0
+120 STO 0, i@g
+121 LOD i@g, 0
+122 LOD k@LeeVec, 0
+123 OPR 0, 11
+124 JMC V, _true_3
+125 JMP 0, _false_7
+126 LOD i@g, 0
+127 LIT 1, 0
+128 OPR 0, 2
+129 STO 0, i@g
+130 JMP 0, _for_3
+131 LIT "Vector[", 0
+132 OPR 0, 20
+133 LOD i@g, 0
+134 OPR 0, 20
+135 LIT "]: ", 0
+136 OPR 0, 20
+137 LOD i@g, 0
+138 OPR vector@g, 19
+139 LOD i@g, 0
+140 LOD vector@g, 0
+141 OPR 0, 21
+142 JMP 0, _forIncr_3
+143 LIT "saliendo lee vec", 0
+144 OPR 0, 21
+145 OPR 0, 1
+146 STO 0, k@OrdBurbuja
+147 LIT 1, 0
+148 STO 0, i@g
+149 LOD i@g, 0
+150 LOD k@OrdBurbuja, 0
+151 LIT 1, 0
+152 OPR 0, 3
+153 OPR 0, 11
+154 JMC V, _true_4
+155 JMP 0, _false_8
+156 LOD i@g, 0
+157 LIT 1, 0
+158 OPR 0, 2
+159 STO 0, i@g
+160 JMP 0, _for_4
+161 LOD i@g, 0
+162 LIT 1, 0
+163 OPR 0, 2
+164 STO 0, j@g
+165 LOD j@g, 0
+166 LOD k@OrdBurbuja, 0
+167 OPR 0, 11
+168 JMC V, _true_5
+169 JMP 0, _false_9
+170 LOD j@g, 0
+171 LIT 1, 0
+172 OPR 0, 2
+173 STO 0, j@g
+174 JMP 0, _for_5
+175 LOD i@g, 0
+176 LOD vector@g, 0
+177 LOD j@g, 0
+178 LOD vector@g, 0
+179 OPR 0, 10
+180 JMC F, _false_10
+181 LOD i@g, 0
+182 LOD vector@g, 0
+183 STO 0, temp@OrdBurbuja
+184 LIT "asd ", 0
+185 OPR 0, 20
+186 LOD temp@OrdBurbuja, 0
+187 OPR 0, 21
+188 LOD i@g, 0
+189 LOD j@g, 0
+190 LOD vector@g, 0
+191 STO 0, vector@g
+192 LIT "if vector[", 0
+193 OPR 0, 20
+194 LOD i@g, 0
+195 OPR 0, 20
+196 LIT "]=", 0
+197 OPR 0, 20
+198 LOD i@g, 0
+199 LOD vector@g, 0
+200 OPR 0, 20
+201 LIT " vector[", 0
+202 OPR 0, 20
+203 LOD j@g, 0
+204 OPR 0, 20
+205 LIT "]=", 0
+206 OPR 0, 20
+207 LOD j@g, 0
+208 LOD vector@g, 0
+209 OPR 0, 20
+210 LIT " temp=", 0
+211 OPR 0, 20
+212 LOD temp@OrdBurbuja, 0
+213 OPR 0, 21
+214 LOD j@g, 0
+215 LOD temp@OrdBurbuja, 0
+216 STO 0, vector@g
+217 LIT "orden", 0
+218 OPR 0, 20
+219 LOD temp@OrdBurbuja, 0
+220 OPR 0, 20
+221 LOD i@g, 0
+222 LOD vector@g, 0
+223 OPR 0, 20
+224 LOD j@g, 0
+225 LOD vector@g, 0
+226 OPR 0, 21
+227 JMP 0, _endIf_4
+228 JMP 0, _forIncr_5
+229 JMP 0, _forIncr_4
+230 LIT "saliendo de burbuja", 0
+231 OPR 0, 21
+232 OPR 0, 1
+233 STO 0, k@ImpVec
+234 LIT 1, 0
+235 STO 0, i@g
+236 LOD i@g, 0
+237 LOD k@ImpVec, 0
+238 OPR 0, 11
+239 JMC V, _true_6
+240 JMP 0, _false_11
+241 LOD i@g, 0
+242 LIT 1, 0
+243 OPR 0, 2
+244 STO 0, i@g
+245 JMP 0, _for_6
+246 LIT "Vector[", 0
+247 OPR 0, 20
+248 LOD i@g, 0
+249 OPR 0, 20
+250 LIT "]= ", 0
+251 OPR 0, 20
+252 LOD i@g, 0
+253 LOD vector@g, 0
+254 OPR 0, 21
+255 JMP 0, _forIncr_6
+256 OPR 0, 1
+257 STO 0, k@LeeMat
+258 LIT 1, 0
+259 STO 0, i@g
+260 LOD i@g, 0
+261 LOD k@LeeMat, 0
+262 OPR 0, 11
+263 JMC V, _true_7
+264 JMP 0, _false_12
+265 LOD i@g, 0
+266 LIT 1, 0
+267 OPR 0, 2
+268 STO 0, i@g
+269 JMP 0, _for_7
+270 LIT 1, 0
+271 STO 0, j@g
+272 LOD j@g, 0
+273 LOD k@LeeMat, 0
+274 OPR 0, 11
+275 JMC V, _true_8
+276 JMP 0, _false_13
+277 LOD j@g, 0
+278 LIT 1, 0
+279 OPR 0, 2
+280 STO 0, j@g
+281 JMP 0, _for_8
+282 LIT "Matriz[", 0
+283 OPR 0, 20
+284 LOD i@g, 0
+285 OPR 0, 20
+286 LIT "][", 0
+287 OPR 0, 20
+288 LOD j@g, 0
+289 OPR 0, 20
+290 LIT "]: ", 0
+291 OPR 0, 20
+292 LOD i@g, 0
+293 LOD j@g, 0
+294 OPR matriz@g, 19
+295 JMP 0, _forIncr_8
+296 JMP 0, _forIncr_7
+297 OPR 0, 1
+298 STO 0, v@MulMat
+299 STO 0, k@MulMat
+300 LOD k@MulMat, 0
+301 STO 0, i@g
+302 LOD i@g, 0
+303 LIT 1, 0
+304 OPR 0, 12
+305 JMC V, _true_9
+306 JMP 0, _false_14
+307 LOD i@g, 0
+308 LIT 1, 0
+309 OPR 0, 3
+310 STO 0, i@g
+311 JMP 0, _for_9
+312 LOD k@MulMat, 0
+313 STO 0, j@g
+314 LOD j@g, 0
+315 LIT 1, 0
+316 OPR 0, 12
+317 JMC V, _true_10
+318 JMP 0, _false_15
+319 LOD j@g, 0
+320 LIT 1, 0
+321 OPR 0, 3
+322 STO 0, j@g
+323 JMP 0, _for_10
+324 LOD i@g, 0
+325 LOD j@g, 0
+326 LOD i@g, 0
+327 LOD j@g, 0
+328 LOD matriz@g, 0
+329 LOD v@MulMat, 0
+330 OPR 0, 4
+331 STO 0, matriz@g
+332 JMP 0, _forIncr_10
+333 JMP 0, _forIncr_9
+334 OPR 0, 1
+335 STO 0, k@ImpMat
+336 LIT 1, 0
+337 STO 0, i@g
+338 LOD i@g, 0
+339 LOD k@ImpMat, 0
+340 OPR 0, 11
+341 JMC V, _true_11
+342 JMP 0, _false_16
+343 LOD i@g, 0
+344 LIT 1, 0
+345 OPR 0, 2
+346 STO 0, i@g
+347 JMP 0, _for_11
+348 LIT 1, 0
+349 STO 0, j@g
+350 LOD j@g, 0
+351 LOD k@ImpMat, 0
+352 OPR 0, 11
+353 JMC V, _true_12
+354 JMP 0, _false_17
+355 LOD j@g, 0
+356 LIT 1, 0
+357 OPR 0, 2
+358 STO 0, j@g
+359 JMP 0, _for_12
+360 LIT "Matriz[", 0
+361 OPR 0, 20
+362 LOD i@g, 0
+363 OPR 0, 20
+364 LIT "][", 0
+365 OPR 0, 20
+366 LOD j@g, 0
+367 OPR 0, 20
+368 LIT "]= ", 0
+369 OPR 0, 20
+370 LOD i@g, 0
+371 LOD j@g, 0
+372 LOD matriz@g, 0
+373 OPR 0, 21
+374 JMP 0, _forIncr_12
+375 JMP 0, _forIncr_11
+376 OPR 0, 1
+377 STO 0, b@Compara
+378 STO 0, ar@Compara
+379 LOD ar@Compara, 0
+380 LOD b@Compara, 0
+381 OPR 0, 10
+382 STO 0, Compara@g
+383 OPR 0, 1
+384 OPR 0, 1
+385 LIT 3.141592, 0
+386 STO 0, PI@g
+387 LIT 30, 0
+388 STO 0, MAX@g
+389 LIT F, 0
+390 STO 0, bandera@g
+391 LIT "Dame Radio: ", 0
+392 OPR 0, 20
+393 OPR r@g, 19
+394 LIT "Dame Altura: ", 0
+395 OPR 0, 20
+396 OPR s@g, 19
+397 LIT "El Volumen del Cilindro= ", 0
+398 OPR 0, 20
+399 LOD _return_2, 0
+400 LOD r@g, 0
+401 LOD s@g, 0
+402 CAL VolCil@g, 0
+403 LOD VolCil@g, 0
+404 OPR 0, 21
+405 LIT "Es el radio ", 0
+406 OPR 0, 20
+407 LOD r@g, 0
+408 OPR 0, 20
+409 LIT " es mayor que la Altura ", 0
+410 OPR 0, 20
+411 LOD s@g, 0
+412 OPR 0, 20
+413 LIT "? ", 0
+414 OPR 0, 20
+415 LOD _return_3, 0
+416 LOD r@g, 0
+417 LOD s@g, 0
+418 CAL Compara@g, 0
+419 LOD Compara@g, 0
+420 JMC F, _false_18
+421 LIT "Verdadero", 0
+422 OPR 0, 21
+423 JMP 0, _endIf_5
+424 LIT "Falso", 0
+425 OPR 0, 21
+426 LOD _return_4, 0
+427 LIT 5, 0
+428 CAL LeeVec@g, 0
+429 LOD _return_5, 0
+430 LIT 5, 0
+431 CAL OrdBurbuja@g, 0
+432 LIT "", 0
+433 OPR 0, 21
+434 LIT "*** Arreglo Ordenado ***", 0
+435 OPR 0, 21
+436 LOD _return_6, 0
+437 LIT 5, 0
+438 CAL ImpVec@g, 0
+439 LIT "Dame elementos de Matriz NxN: ", 0
+440 OPR 0, 20
+441 OPR n@g, 19
+442 LOD _return_7, 0
+443 LOD n@g, 0
+444 CAL LeeMat@g, 0
+445 LOD _return_8, 0
+446 LOD n@g, 0
+447 LIT 100, 0
+448 CAL MulMat@g, 0
+449 LIT "", 0
+450 OPR 0, 21
+451 LOD _return_9, 0
+452 LOD n@g, 0
+453 CAL ImpMat@g, 0
+454 LOD _return_10, 0
+455 CAL Test@g, 0
+456 LIT "Dame tu nombre: ", 0
+457 OPR 0, 20
+458 OPR alfa@g, 19
+459 LIT "Dame tu Apellido: ", 0
+460 OPR 0, 20
+461 OPR beta@g, 19
+462 LIT "Hola ", 0
+463 OPR 0, 20
+464 LOD _return_11, 0
+465 LOD alfa@g, 0
+466 LOD beta@g, 0
+467 CAL Concat@g, 0
+468 LOD Concat@g, 0
+469 OPR 0, 20
+470 LIT " ya pasaste!!!", 0
+471 OPR 0, 21
+472 OPR 0, 0
