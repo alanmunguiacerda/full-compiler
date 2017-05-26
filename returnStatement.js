@@ -1,5 +1,6 @@
 const TreeNode = require('./treeNode');
 const ErrorManager = require('./errorManager');
+const VALID_OPERATIONS = require('./const');
 
 class ReturnStatement extends TreeNode {
     constructor(expr, token) {
@@ -20,7 +21,9 @@ class ReturnStatement extends TreeNode {
             return;
         }
 
-        if (parentFunc.type !== exprType) {
+        const key = `${parentFunc.type}:=${exprType}`;
+
+        if (VALID_OPERATIONS[key]) {
             ErrorManager.sem(this.expr.row, this.expr.col, `Can't return ${exprType}, ${parentFunc.type} required`);
             return;
         }

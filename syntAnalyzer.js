@@ -694,13 +694,14 @@ class SyntAnalyzer {
         } else if (this.lookahead[0] === CT_LOG) {
             expr = new Bool(this.lookahead[1], this.lookahead);
             this.matchToken(CT_LOG);
-        } else if (!cond.isConstant && this.lookahead[0] === '(') {
+        } else if (!cond.isConstant && this.lookahead[1] === '(') {
             this.matchLexeme('(');
             expr = this.logicalOrExpression();
             this.matchLexeme(')');
         } else {
             this.expected('expresión');
         }
+
         return expr;
     }
 
