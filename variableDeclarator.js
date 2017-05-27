@@ -30,6 +30,11 @@ class VariableDeclarator extends TreeNode {
             return;
         }
 
+        if (this.dimensions > 2) {
+            ErrorManager.sem(this.id.row, this.id.col, `Variable "${id}" exceeded valid dimensions`);
+            return;
+        }
+
         if (this.init) {
             this.init.checkSemantic();
             const opKey = `${type}:=${this.init.type}`;
@@ -54,6 +59,11 @@ class VariableDeclarator extends TreeNode {
                 let dimSize = dimension.symbol;
                 if (isNaN(dimSize)) {
                     const recordKey = `${dimension.symbol}@g`;
+                    const dimRecord = TreeNode.symTable[recordKey];
+                    if (dimRecord.is !== 'CONST') {
+                        ErrorManager.sem(dimRecord.row, dimRecord.col, `Dimension can only be <constant|int>`);
+                        return;
+                    }
                     const record = TreeNode.symTable[recordKey];
                     dimSize = record.value;
                 }

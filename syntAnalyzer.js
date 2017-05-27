@@ -177,11 +177,7 @@ class SyntAnalyzer {
         while (this.lookahead[1] === '[') {
             dimensions += 1;
             this.matchLexeme('[');
-            if (this.lookahead[0] === INT || this.lookahead[0] === IDENTI) {
-                dimensionsSizes.push(this.primaryExpression());
-            } else {
-                this.expected('<entero|constante>');
-            }
+            dimensionsSizes.push(this.primaryExpression());
             this.matchLexeme(']');
         }
 
